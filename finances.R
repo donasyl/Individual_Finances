@@ -1,14 +1,18 @@
 # Installations
-install.packages("tidyverse")
+#install.packages("tidyverse")
+#install.packages("htmlwidgets")
+#install.packages("plotly")
 library(readr)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(stringr)
 library(lubridate)
+library(plotly)
+library(htmlwidgets)
 
 # Load
-finances <- read_csv("donasyl's personal projects/finances /expense_data_1.csv")
+finances <- read_csv("~/donasyl's personal projects/finances /expense_data_1.csv")
 
 # New column "Time" b/c date and time are originally together
 finances$Time <- word(finances$Date, 2, sep = " ")
@@ -32,17 +36,24 @@ View(cleaned_finances)
 summary(cleaned_finances)
 
 # Plotting Every Expense Category by the Amount it costs for individual 
-ggplot(data = cleaned_finances) +
+p <-ggplot(data = cleaned_finances) +
   geom_point(mapping = aes(x = Category, y = Amount),
     colour = 'blue', size = 3
   )
 
+p_fig <- ggplotly(p)
+saveWidget(p1_fig, "expenses_by_category.html", selfcontained = TRUE)
+
+
 # Baxplot for Income/Expense by Amount 
-ggplot(cleaned_finances, aes(x = `Income/Expense`, y = Amount, fill = `Income/Expense`)) +
+p2 <- ggplot(cleaned_finances, aes(x = `Income/Expense`, y = Amount, fill = `Income/Expense`)) +
   geom_boxplot() +
   scale_fill_brewer(palette = "Set1") +
   theme_minimal() +
   labs(title = "Paid Expenses & Income by Amount", y = "Amount")
+
+p2_fig <- ggplotly(p2)
+saveWidget(p2_fig, "income_expense_boxplot.html", selfcontained = TRUE)
 
 # monthly analyses 
 # Filter to only include dates that are the 2nd day of the month, excluding November 2021
@@ -58,7 +69,7 @@ totals_split <- filtered_finances %>%
 totals_split
 
 # Bar graph of Expense and Income graphs
-ggplot(totals_split, aes(x = Date, y = Total_Amount, fill = `Income/Expense`)) +
+p3 <- ggplot(totals_split, aes(x = Date, y = Total_Amount, fill = `Income/Expense`)) +
   geom_col(width = 25) +  # bar width adjustment
   facet_wrap(~ `Income/Expense`, scales = "free_y") +
   labs(
@@ -79,8 +90,10 @@ expense_income_by_category <- filtered_expenses %>%
 
 expense_income_by_category
 
+p3_fig <- ggplotly(p3)
+saveWidget(p3_fig, "monthly_income_expenses.html", selfcontained = TRUE)
+
 # Item/Service Expenses
 filtered_finances$Note...5
 
-# Save as HTML
-htmlwidgets::saveWidget(ggplotly(p), "finance_plot.html")
+
