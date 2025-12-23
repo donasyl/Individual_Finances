@@ -65,8 +65,3 @@ Outcomes
 
 This analysis demonstrates how exploratory data analysis can be applied to personal finance data to surface spending patterns, income variability, and financial risk points. The project emphasizes reproducible workflows and clear data storytelling.
 
-lubridate
-
-Outcomes
-
-This analysis demonstrates how exploratory data analysis can be applied to personal finance data to surface spending patterns, income variability, and financial risk points. The project emphasizes reproducible workflows and clear data storytelling.
